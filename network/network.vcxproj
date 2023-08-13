@@ -75,8 +75,68 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="server\Server.cpp" />
+    <ClCompile Include="server\System.cpp" />
+    <ClCompile Include="server\TaskMonitor.cpp" />
+    <ClCompile Include="share\MessageQueue.cpp" />
+    <ClCompile Include="share\SharedMemoryFIFO.cpp" />
+    <ClCompile Include="socket\ClientSocket.cpp" />
+    <ClCompile Include="socket\EventPoller.cpp" />
+    <ClCompile Include="socket\ServerSocket.cpp" />
+    <ClCompile Include="socket\Socket.cpp" />
+    <ClCompile Include="socket\SocketHandler.cpp" />
+    <ClCompile Include="task\ResponseTask.cpp" />
+    <ClCompile Include="task\WriteTask.cpp" />
+    <ClCompile Include="thread\condition\Condition.cpp" />
+    <ClCompile Include="thread\mutex\AutoLock.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="thread\mutex\Mutex.cpp" />
+    <ClCompile Include="thread\TaskDispatcher.cpp" />
+    <ClCompile Include="thread\task\BaseTask.cpp" />
+    <ClCompile Include="thread\Thread.cpp" />
+    <ClCompile Include="thread\ThreadPool.cpp" />
+    <ClCompile Include="thread\WorkerThread.cpp" />
+    <ClCompile Include="utility\json\Json.cpp" />
+    <ClCompile Include="utility\json\Parser.cpp" />
+    <ClCompile Include="utility\logger\Logger.cpp" />
   </ItemGroup>
-  <ItemDefinitionGroup />
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="server\Server.h" />
+    <ClInclude Include="server\System.h" />
+    <ClInclude Include="server\TaskMonitor.h" />
+    <ClInclude Include="share\MessageQueue.h" />
+    <ClInclude Include="share\SharedMemoryFIFO.h" />
+    <ClInclude Include="socket\ClientSocket.h" />
+    <ClInclude Include="socket\EventPoller.h" />
+    <ClInclude Include="socket\ServerSocket.h" />
+    <ClInclude Include="socket\Socket.h" />
+    <ClInclude Include="socket\SocketHandler.h" />
+    <ClInclude Include="task\ResponseTask.h" />
+    <ClInclude Include="task\TaskFactory.h" />
+    <ClInclude Include="task\WriteTask.h" />
+    <ClInclude Include="thread\condition\Condition.h" />
+    <ClInclude Include="protocol\protocol.h" />
+    <ClInclude Include="thread\mutex\AutoLock.h" />
+    <ClInclude Include="thread\mutex\Mutex.h" />
+    <ClInclude Include="thread\TaskDispatcher.h" />
+    <ClInclude Include="thread\task\BaseTask.h" />
+    <ClInclude Include="thread\Thread.h" />
+    <ClInclude Include="thread\ThreadPool.h" />
+    <ClInclude Include="utility\json\Json.h" />
+    <ClInclude Include="utility\json\Parser.h" />
+    <ClInclude Include="utility\logger\Logger.h" />
+    <ClInclude Include="utility\ObjectPool.h" />
+    <ClInclude Include="thread\WorkerThread.h" />
+    <ClInclude Include="utility\Singleton.h" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
