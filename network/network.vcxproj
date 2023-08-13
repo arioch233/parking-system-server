@@ -86,7 +86,7 @@
     <ClCompile Include="socket\Socket.cpp" />
     <ClCompile Include="socket\SocketHandler.cpp" />
     <ClCompile Include="task\ResponseTask.cpp" />
-    <ClCompile Include="task\WriteTask.cpp" />
+    <ClCompile Include="task\RequestTask.cpp" />
     <ClCompile Include="thread\condition\Condition.cpp" />
     <ClCompile Include="thread\mutex\AutoLock.cpp" />
     <ClCompile Include="main.cpp" />
@@ -116,7 +116,7 @@
     <ClInclude Include="socket\SocketHandler.h" />
     <ClInclude Include="task\ResponseTask.h" />
     <ClInclude Include="task\TaskFactory.h" />
-    <ClInclude Include="task\WriteTask.h" />
+    <ClInclude Include="task\RequestTask.h" />
     <ClInclude Include="thread\condition\Condition.h" />
     <ClInclude Include="protocol\protocol.h" />
     <ClInclude Include="thread\mutex\AutoLock.h" />
@@ -125,6 +125,7 @@
     <ClInclude Include="thread\task\BaseTask.h" />
     <ClInclude Include="thread\Thread.h" />
     <ClInclude Include="thread\ThreadPool.h" />
+    <ClInclude Include="utility\hash\CRC32.h" />
     <ClInclude Include="utility\json\Json.h" />
     <ClInclude Include="utility\json\Parser.h" />
     <ClInclude Include="utility\logger\Logger.h" />

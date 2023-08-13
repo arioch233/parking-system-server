@@ -7,12 +7,12 @@ using namespace thr;
 using namespace net;
 
 namespace task {
-	class WriteTask :
+	class RequestTask :
 		public BaseTask
 	{
 	public:
-		WriteTask(Socket* socket);
-		~WriteTask();
+		RequestTask(Socket* socket);
+		~RequestTask();
 
 		void run() override;
 

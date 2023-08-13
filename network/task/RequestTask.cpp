@@ -1,4 +1,4 @@
-#include "WriteTask.h"
+#include "RequestTask.h"
 
 #include <unistd.h>
 #include <cerrno>
@@ -17,14 +17,14 @@ using namespace json;
 using namespace protocol;
 using namespace shm;
 
-WriteTask::WriteTask(Socket* socket) :BaseTask(socket)
+RequestTask::RequestTask(Socket* socket) :BaseTask(socket)
 {
 }
 
-WriteTask::~WriteTask() {
+RequestTask::~RequestTask() {
 }
 
-void WriteTask::run()
+void RequestTask::run()
 {
 	debug("write task run");
 	SocketHandler* handler = Singleton<SocketHandler>::getInstance();
@@ -78,7 +78,7 @@ void WriteTask::run()
 	handler->attach(socket);
 }
 
-void WriteTask::destroy()
+void RequestTask::destroy()
 {
 	debug("write task destory");
 	delete this;
