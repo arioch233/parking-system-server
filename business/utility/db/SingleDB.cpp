@@ -34,7 +34,7 @@ int SingleDB::openDataBase(string path)
 
 int SingleDB::doSQL(string sql, char**& result, int& row, int& col)
 {
-	debug("do sql: %s", sql);
+	debug("do sql: %s", sql.c_str());
 	int res = sqlite3_get_table(this->db, sql.c_str(), &result, &row, &col, &(this->errorMsg));
 	if (res != SQLITE_OK)
 	{
@@ -47,7 +47,7 @@ int SingleDB::doSQL(string sql, char**& result, int& row, int& col)
 
 int SingleDB::doExec(string sql)
 {
-	debug("do sql: %s", sql);
+	debug("do sql: %s", sql.c_str());
 	int res = sqlite3_exec(this->db, sql.c_str(), nullptr, nullptr, &(this->errorMsg));
 	if (res != SQLITE_OK)
 	{

@@ -96,6 +96,7 @@
     <ClCompile Include="thread\Thread.cpp" />
     <ClCompile Include="thread\ThreadPool.cpp" />
     <ClCompile Include="thread\WorkerThread.cpp" />
+    <ClCompile Include="utility\hash\CRC32.cpp" />
     <ClCompile Include="utility\json\Json.cpp" />
     <ClCompile Include="utility\json\Parser.cpp" />
     <ClCompile Include="utility\logger\Logger.cpp" />

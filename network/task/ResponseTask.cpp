@@ -32,9 +32,9 @@ void ResponseTask::run()
 	// 解析数据
 	JsonPacket packet;
 	memcpy(&packet, block->data, sizeof(JsonPacket));
-	error("json = %s", packet.jsonData);
+	error("json = %s", packet.content.jsonData);
 	// 业务处理
-	int len = write(block->socketfd, &packet, packet.packetLength);
+	int len = write(block->socketfd, &packet, packet.header.packetLength);
 	if (len > 0)
 	{
 		debug("response success");
