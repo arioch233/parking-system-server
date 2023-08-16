@@ -16,7 +16,12 @@ namespace protocol {
 		Register,				// 注册
 		GetVideoList,			// 获取视频列表
 		UploadFeatureImage,		// 上传特征图片
-		// 更多业务，后期编写根据实际需求增加
+
+		GetParkingInfo,			// 获取停车场信息
+		UploadEntryInfo,		// 上传入场信息
+		UploadExitInfo,			// 上传出场信息
+		GetParkingRecords,		// 获取停车记录信息
+		GetEntryRescords		// 获取入场记录信息
 	};
 
 	/**
@@ -83,6 +88,7 @@ namespace protocol {
 		uint32_t totalChunks;            // 总分块数
 		uint32_t checksum;            // CRC32
 		uint32_t userid;                // 用户id
+		uint32_t chunkSize;				// 块大小
 		char filename[100];                // 文件名 定长
 		char chunkData[MaxChunkSize];    // 分块数据 不定长
 		FileContent() : fileSize(0), chunkIndex(0), totalChunks(0), checksum(0), userid(0) {
@@ -91,6 +97,7 @@ namespace protocol {
 		}
 		FileContent(uint64_t size, uint32_t index, uint32_t total, const char* data, size_t dataSize, uint32_t userid, const char* file)
 			: fileSize(size), chunkIndex(index), totalChunks(total), userid(userid) {
+			chunkSize = std::min(dataSize, MaxChunkSize);
 			// 初始化分块数据，将传入的数据拷贝到 chunkData 中
 			memset(chunkData, 0, sizeof(chunkData));
 			memcpy(chunkData, data, std::min(dataSize, MaxChunkSize));
@@ -114,10 +121,16 @@ namespace protocol {
 		// 构造函数，用于初始化文件分块数据包
 		FilePacket(BusinessEnum type, uint64_t size, uint32_t index, uint32_t total,
 				   const char* data, size_t dataSize, uint32_t userid, const char* file) {
+			header.packetType = type;
+			content.fileSize = size;
+			content.chunkIndex = index;
+			content.totalChunks = total;
+			content.userid = userid;
+			content.chunkSize = std::min(dataSize, MaxChunkSize);
 			// 初始化包长度
 			header.packetLength = sizeof(PacketHeader) + sizeof(content.fileSize) + sizeof(content.filename) +
 				sizeof(content.chunkIndex) + sizeof(content.totalChunks) + sizeof(content.checksum) +
-				dataSize + sizeof(userid);
+				dataSize + sizeof(userid) + sizeof(content.chunkSize);
 			// 初始化分块数据，将传入的数据拷贝到 chunkData 中
 			memset(content.chunkData, 0, sizeof(content.chunkData));
 			memcpy(content.chunkData, data, std::min(dataSize, MaxChunkSize));

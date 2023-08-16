@@ -16,8 +16,8 @@ int main(int argc, char** argv)
 	server->setConnects(10);
 	server->setWaitTime(30);
 	server->setKey(1234);
-	//server->listen(string("156.224.26.110"), 22222);
-	server->listen(string("192.168.100.113"), 22222);
+	server->listen(string("156.224.26.110"), 22222);
+	//server->listen(string("127.0.0.1"), 22222);
 
 	server->start();
 	return 0;

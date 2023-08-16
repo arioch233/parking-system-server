@@ -76,6 +76,8 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="domain\controller\UserController.cpp" />
+    <ClCompile Include="domain\dao\ParkingLotDAO.cpp" />
+    <ClCompile Include="domain\dao\ParkingRecordDAO.cpp" />
     <ClCompile Include="domain\dao\UserDAO.cpp" />
     <ClCompile Include="domain\entity\ParkingRecord.cpp" />
     <ClCompile Include="domain\entity\Snapshot.cpp" />
@@ -83,12 +85,14 @@
     <ClCompile Include="domain\entity\User.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="domain\entity\ParkingLot.cpp" />
+    <ClCompile Include="domain\controller\ParkingController.cpp" />
     <ClCompile Include="server\Server.cpp" />
     <ClCompile Include="server\ServerHandler.cpp" />
     <ClCompile Include="server\System.cpp" />
     <ClCompile Include="share\MessageQueue.cpp" />
     <ClCompile Include="share\SharedMemoryFIFO.cpp" />
     <ClCompile Include="domain\entity\SystemLog.cpp" />
+    <ClCompile Include="task\UploadFileHandle.cpp" />
     <ClCompile Include="task\WriteTask.cpp" />
     <ClCompile Include="thread\condition\Condition.cpp" />
     <ClCompile Include="thread\mutex\AutoLock.cpp" />
@@ -110,12 +114,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="domain\controller\UserController.h" />
+    <ClInclude Include="domain\dao\ParkingLotDAO.h" />
+    <ClInclude Include="domain\dao\ParkingRecordDAO.h" />
     <ClInclude Include="domain\dao\UserDAO.h" />
     <ClInclude Include="domain\entity\ParkingRecord.h" />
     <ClInclude Include="domain\entity\Snapshot.h" />
     <ClInclude Include="domain\entity\SurveillanceVideo.h" />
     <ClInclude Include="domain\entity\User.h" />
     <ClInclude Include="domain\entity\ParkingLot.h" />
+    <ClInclude Include="domain\controller\ParkingController.h" />
     <ClInclude Include="protocol\protocol.h" />
     <ClInclude Include="server\Server.h" />
     <ClInclude Include="server\ServerHandler.h" />
@@ -124,6 +131,7 @@
     <ClInclude Include="share\SharedMemoryFIFO.h" />
     <ClInclude Include="domain\entity\SystemLog.h" />
     <ClInclude Include="task\TaskFactory.h" />
+    <ClInclude Include="task\UploadFileHandle.h" />
     <ClInclude Include="task\WriteTask.h" />
     <ClInclude Include="thread\condition\Condition.h" />
     <ClInclude Include="thread\mutex\AutoLock.h" />
