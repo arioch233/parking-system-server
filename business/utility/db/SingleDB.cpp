@@ -58,6 +58,20 @@ int SingleDB::doExec(string sql)
 	return 0;
 }
 
+int SingleDB::doExec(string sql, int& id)
+{
+	debug("do sql: %s", sql.c_str());
+	int res = sqlite3_exec(this->db, sql.c_str(), nullptr, nullptr, &(this->errorMsg));
+	if (res != SQLITE_OK)
+	{
+		error("sqlite3 error, code = %d, msg = %s", sqlite3_errcode(this->db), sqlite3_errmsg(this->db));
+		return res;
+	}
+	id = sqlite3_last_insert_rowid(db);
+	debug("result: OK, a record has been modified");
+	return 0;
+}
+
 int SingleDB::closeDataBase()
 {
 	int res = sqlite3_close(this->db);

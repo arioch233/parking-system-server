@@ -21,7 +21,15 @@ namespace protocol {
 		UploadEntryInfo,		// 上传入场信息
 		UploadExitInfo,			// 上传出场信息
 		GetParkingRecords,		// 获取停车记录信息
-		GetEntryRescords		// 获取入场记录信息
+		GetEntryRescords,		// 获取入场记录信息
+
+		ExGetEntryRecord,       // 出场场景上传车牌号码 获取对应车牌的入场记录
+		UploadExitFeatureImage, // 上传出场车牌图片
+		UploadEntryFeatureImage,// 上传入场车牌图片
+
+		UploadVideoInfo,        // 上传停车场录制信息
+		GetDaysMenuList,		// 获取菜单按日
+		GetMouthsMenuList		// 获取菜单按月
 	};
 
 	/**

@@ -68,6 +68,8 @@ void RequestTask::run()
 	// 分别处理文件包与普通数据包
 	switch (packetHeader.packetType) {
 		// 与文件相关的数据包处理
+	case BusinessEnum::UploadEntryFeatureImage:
+	case BusinessEnum::UploadExitFeatureImage:
 	case BusinessEnum::UploadFeatureImage:
 	{
 		std::cout << "文件" << sizeof(FilePacket) << std::endl;

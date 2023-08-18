@@ -16,6 +16,7 @@ namespace db {
 		int openDataBase(string path);
 		int doSQL(string sql, char**& result, int& row, int& col);
 		int doExec(string sql);
+		int doExec(string sql, int& id);
 		int closeDataBase();
 
 	private:

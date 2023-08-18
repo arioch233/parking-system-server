@@ -8,12 +8,12 @@ public:
 	ParkingRecord(int userId, const std::string& carNumber, const std::string& entryUrl,
 				  const std::string& entryAddress, const std::string& entryTime, const std::string& exitUrl,
 				  const std::string& exitAddress, const std::string& exitTime, const std::string& parkingDuration,
-				  float parkingFee, int paymentStatus, const std::string& createTime);
+				  double parkingFee, int paymentStatus, const std::string& createTime);
 
 	ParkingRecord(int id, int userId, const std::string& carNumber, const std::string& entryUrl,
 				  const std::string& entryAddress, const std::string& entryTime, const std::string& exitUrl,
 				  const std::string& exitAddress, const std::string& exitTime, const std::string& parkingDuration,
-				  float parkingFee, int paymentStatus, const std::string& createTime);
+				  double parkingFee, int paymentStatus, const std::string& createTime);
 
 	virtual ~ParkingRecord();
 
@@ -57,9 +57,9 @@ public:
 
 	void setParkingDuration(const std::string& parkingDuration);
 
-	float getParkingFee() const;
+	double getParkingFee() const;
 
-	void setParkingFee(float parkingFee);
+	void setParkingFee(double parkingFee);
 
 	int getPaymentStatus() const;
 
@@ -80,7 +80,7 @@ private:
 	std::string exitAddress;
 	std::string exitTime;
 	std::string parkingDuration;
-	float parkingFee;
+	double parkingFee;
 	int paymentStatus;
 	std::string createTime;
 };

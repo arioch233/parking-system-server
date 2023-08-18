@@ -14,7 +14,7 @@ ParkingRecord::~ParkingRecord() {
 ParkingRecord::ParkingRecord(int userId, const std::string& carNumber, const std::string& entryUrl,
 							 const std::string& entryAddress, const std::string& entryTime, const std::string& exitUrl,
 							 const std::string& exitAddress, const std::string& exitTime,
-							 const std::string& parkingDuration, float parkingFee, int paymentStatus,
+							 const std::string& parkingDuration, double parkingFee, int paymentStatus,
 							 const std::string& createTime) : userId(userId), carNumber(carNumber), entryUrl(entryUrl),
 	entryAddress(entryAddress), entryTime(entryTime),
 	exitUrl(exitUrl), exitAddress(exitAddress),
@@ -25,7 +25,7 @@ ParkingRecord::ParkingRecord(int userId, const std::string& carNumber, const std
 ParkingRecord::ParkingRecord(int id, int userId, const std::string& carNumber, const std::string& entryUrl,
 							 const std::string& entryAddress, const std::string& entryTime, const std::string& exitUrl,
 							 const std::string& exitAddress, const std::string& exitTime,
-							 const std::string& parkingDuration, float parkingFee, int paymentStatus,
+							 const std::string& parkingDuration, double parkingFee, int paymentStatus,
 							 const std::string& createTime) : id(id), userId(userId), carNumber(carNumber),
 	entryUrl(entryUrl), entryAddress(entryAddress),
 	entryTime(entryTime), exitUrl(exitUrl),
@@ -113,11 +113,11 @@ void ParkingRecord::setParkingDuration(const std::string& parkingDuration) {
 	ParkingRecord::parkingDuration = parkingDuration;
 }
 
-float ParkingRecord::getParkingFee() const {
+double ParkingRecord::getParkingFee() const {
 	return parkingFee;
 }
 
-void ParkingRecord::setParkingFee(float parkingFee) {
+void ParkingRecord::setParkingFee(double parkingFee) {
 	ParkingRecord::parkingFee = parkingFee;
 }
 

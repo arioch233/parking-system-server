@@ -75,9 +75,11 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="domain\controller\SnapshotController.cpp" />
     <ClCompile Include="domain\controller\UserController.cpp" />
     <ClCompile Include="domain\dao\ParkingLotDAO.cpp" />
     <ClCompile Include="domain\dao\ParkingRecordDAO.cpp" />
+    <ClCompile Include="domain\dao\SurveillanceVideoDAO.cpp" />
     <ClCompile Include="domain\dao\UserDAO.cpp" />
     <ClCompile Include="domain\entity\ParkingRecord.cpp" />
     <ClCompile Include="domain\entity\Snapshot.cpp" />
@@ -92,6 +94,7 @@
     <ClCompile Include="share\MessageQueue.cpp" />
     <ClCompile Include="share\SharedMemoryFIFO.cpp" />
     <ClCompile Include="domain\entity\SystemLog.cpp" />
+    <ClCompile Include="domain\dao\SnapshotDAO.cpp" />
     <ClCompile Include="task\UploadFileHandle.cpp" />
     <ClCompile Include="task\WriteTask.cpp" />
     <ClCompile Include="thread\condition\Condition.cpp" />
@@ -113,9 +116,11 @@
     <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="domain\controller\SnapshotController.h" />
     <ClInclude Include="domain\controller\UserController.h" />
     <ClInclude Include="domain\dao\ParkingLotDAO.h" />
     <ClInclude Include="domain\dao\ParkingRecordDAO.h" />
+    <ClInclude Include="domain\dao\SurveillanceVideoDAO.h" />
     <ClInclude Include="domain\dao\UserDAO.h" />
     <ClInclude Include="domain\entity\ParkingRecord.h" />
     <ClInclude Include="domain\entity\Snapshot.h" />
@@ -130,6 +135,7 @@
     <ClInclude Include="share\MessageQueue.h" />
     <ClInclude Include="share\SharedMemoryFIFO.h" />
     <ClInclude Include="domain\entity\SystemLog.h" />
+    <ClInclude Include="domain\dao\SnapshotDAO.h" />
     <ClInclude Include="task\TaskFactory.h" />
     <ClInclude Include="task\UploadFileHandle.h" />
     <ClInclude Include="task\WriteTask.h" />

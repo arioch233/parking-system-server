@@ -1,5 +1,11 @@
 #pragma once
 
+/************************************************************************/
+/* SQL 语句构建工具
+*
+*/
+/************************************************************************/
+
 #include <string>
 
 namespace db {
@@ -9,6 +15,7 @@ namespace db {
 			query = "";
 		}
 
+		// SQL 查询
 		SQLQueryBuilder& select(const std::string& columns) {
 			query += "SELECT " + columns + " ";
 			return *this;
@@ -49,11 +56,36 @@ namespace db {
 			return *this;
 		}
 
+		// SQL 更新
+		SQLQueryBuilder& update(const std::string& table) {
+			query += "UPDATE " + table + " ";
+			return *this;
+		}
+
+		SQLQueryBuilder& set(const std::string& column, const std::string& value) {
+			if (!setStarted) {
+				query += "SET ";
+				setStarted = true;
+			}
+			else {
+				query += ", ";
+			}
+			query += column + " = " + value + " ";
+			return *this;
+		}
+
+		// 分页
+		SQLQueryBuilder& limit(int offset, int count) {
+			query += "LIMIT " + std::to_string(count) + " OFFSET " + std::to_string(offset) + " ";
+			return *this;
+		}
+
 		std::string build() const {
 			return query;
 		}
 
 	private:
 		std::string query;
+		bool setStarted = false;
 	};
 }
