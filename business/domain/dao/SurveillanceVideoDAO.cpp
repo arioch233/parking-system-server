@@ -20,7 +20,7 @@ SurveillanceVideo* SurveillanceVideoDAO::getVideoInfoById(int id)
 	SQLQueryBuilder builder;
 	std::string sql = builder.select("*")
 		.from("surveillance_videos")
-		.where("id = :id")
+		.where("id = " + std::to_string(id))
 		.build();
 	char** qres;
 	int row, col;

@@ -54,7 +54,7 @@ std::vector<Snapshot> SnapshotDAO::getSnapShotList(int pageNumber, int recordsPe
 	}
 
 	int offset = (pageNumber - 1) * recordsPerPage;
-	builder.limit(recordsPerPage, offset);
+	builder.limit(offset, recordsPerPage);
 	std::string sql = builder.build();
 
 	char** qres;
@@ -64,9 +64,9 @@ std::vector<Snapshot> SnapshotDAO::getSnapShotList(int pageNumber, int recordsPe
 		if (row > 0) {
 			for (int i = 1; i <= row; i++) {
 				int id = atoi(qres[i * col]);
-				int captureType = atoi(qres[i * col + 1]);
+				int captureType = atoi(qres[i * col + 2]);
 
-				Snapshot snapshot(id, captureType, qres[i * col + 2], atoi(qres[i * col + 3]), atoi(qres[i * col + 4]),
+				Snapshot snapshot(id, captureType, qres[i * col + 1], atoi(qres[i * col + 4]), atoi(qres[i * col + 3]),
 								  qres[i * col + 5], qres[i * col + 6], qres[i * col + 7]);
 				records.push_back(snapshot);
 			}

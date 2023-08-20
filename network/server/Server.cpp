@@ -30,7 +30,7 @@ void Server::listen(const string& ip, int port) {
 void Server::start() {
 	// 初始化共享内存
 	SharedMemoryFIFO* shm = Singleton<SharedMemoryFIFO>::getInstance();
-	shm->initialize(this->key, 2048, this->threads);
+	shm->initialize(this->key, 1024 * 11, this->threads);
 
 	// 初始化任务分配器
 	TaskDispatcher* dispatcher = Singleton<TaskDispatcher>::getInstance();

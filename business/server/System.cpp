@@ -43,6 +43,18 @@ void System::init()
 	{
 		closedir(dir);
 	}
+	// 创建备份存储文件夹
+	const string& backDir = this->rootPath + "/backup";
+	dir = opendir(backDir.c_str());
+	if (dir == nullptr)
+	{
+		mkdir(backDir.c_str(), 0755);
+	}
+	else
+	{
+		closedir(dir);
+	}
+
 	// 初始化日志系统
 	Logger* log = Logger::instance();
 	log->open(logDir + "/log-dev.log");

@@ -55,15 +55,32 @@ std::string ParkingController::entryCar(int userId, std::string carNumber, std::
 	record.setEntryTime(time);
 	record.setPaymentStatus(0);
 	Json result;
-	if (this->parkingRecordDAO.addParkingRecord(record)) {
-		result["flag"] = true;
-		result["msg"] = carNumber + " 入场";
+	// 判断车辆是否已在数据库中
+	if (this->parkingRecordDAO.getParkingRecordByCarNumber(carNumber) == nullptr)
+	{
+		if (this->parkingRecordDAO.addParkingRecord(record)) {
+			result["flag"] = true;
+			result["msg"] = carNumber + " 入场";
+			// 更新停车场信息
+			ParkingLot* lot = this->parkingLotDAO.getParkingLotInfoById(1);
+			int count = lot->getAvailableSpaces();
+			++count;
+			lot->setAvailableSpaces(count);
+			this->parkingLotDAO.updateParkingLotInfo(*lot);
+			delete lot;
+		}
+		else
+		{
+			result["flag"] = false;
+			result["msg"] = carNumber + " 入场失败";
+		}
 	}
 	else
 	{
 		result["flag"] = false;
-		result["msg"] = carNumber + " 入场失败";
+		result["msg"] = carNumber + " 入场失败，场内存在相同车牌的车辆";
 	}
+
 	jsonStr = result.str();
 	return jsonStr;
 }
@@ -93,19 +110,25 @@ std::string ParkingController::getCarEntryInfo(std::string carNumber)
 std::string ParkingController::exitCar(int userId, std::string carNumber, std::string imgPath, std::string address, std::string time, double fee)
 {
 	std::string jsonStr = "";
-	ParkingRecord record;
-	record.setUserId(userId);
-	record.setCarNumber(carNumber);
-	record.setExitUrl(imgPath);
-	record.setExitAddress(address);
-	record.setExitTime(time);
-	record.setParkingFee(fee);
-	record.setPaymentStatus(1);
+	ParkingRecord* record = this->parkingRecordDAO.getParkingRecordByCarNumber(carNumber);
+	record->setExitUrl(imgPath);
+	record->setExitAddress(address);
+	record->setExitTime(time);
+	record->setParkingFee(fee);
+	record->setParkingDuration("");
+	record->setPaymentStatus(1);
 	Json result;
-	if (this->parkingRecordDAO.updateParkingRecord(record))
+	if (this->parkingRecordDAO.updateParkingRecord(*record))
 	{
 		result["flag"] = true;
 		result["msg"] = carNumber + " 出场";
+		// 更新停车场信息
+		ParkingLot* lot = this->parkingLotDAO.getParkingLotInfoById(1);
+		int count = lot->getAvailableSpaces();
+		--count;
+		lot->setAvailableSpaces(count);
+		this->parkingLotDAO.updateParkingLotInfo(*lot);
+		delete lot;
 	}
 	else
 	{
@@ -114,13 +137,14 @@ std::string ParkingController::exitCar(int userId, std::string carNumber, std::s
 	}
 
 	jsonStr = result.str();
+	delete record;
 	return jsonStr;
 }
 
 std::string ParkingController::getEntryCarRecords()
 {
 	std::string jsonStr = "";
-	std::vector<ParkingRecord> records = this->parkingRecordDAO.getPageOfParkingRecords(0, 4, "", "entry_time DESC");
+	std::vector<ParkingRecord> records = this->parkingRecordDAO.getPageOfParkingRecords(1, 4, "", "entry_time DESC");
 	Json result;
 	if (records.empty() && records.size() == 0)
 	{
@@ -160,15 +184,29 @@ std::string ParkingController::getParkingRecords(int pageNumber, int recordsPerP
 	}
 	if (!startTime.empty())
 	{
-		condition += "AND created_at >= ";
+		if (!carNumber.empty())
+		{
+			condition += " AND ";
+		}
+		condition += "created_at >= '";
 		condition += startTime;
+		condition += "'";
 	}
 	if (!endTime.empty())
 	{
-		condition += "AND created_at <= ";
+		if (!carNumber.empty() || !startTime.empty())
+		{
+			condition += " AND ";
+		}
+		condition += "created_at <= '";
 		condition += endTime;
+		condition += "'";
 	}
-	condition += "AND payment_status = 1";
+	if (!carNumber.empty() || !startTime.empty() || !endTime.empty())
+	{
+		condition += " AND ";
+	}
+	condition += "payment_status = 1";
 	std::vector<ParkingRecord> records = this->parkingRecordDAO.getPageOfParkingRecords(pageNumber, recordsPerPage, condition, "entry_time DESC");
 	Json result;
 	if (records.empty() && records.size() == 0)

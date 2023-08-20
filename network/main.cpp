@@ -12,12 +12,12 @@ int main(int argc, char** argv)
 	sys->init();
 	// 系统服务初始化
 	Server* server = Singleton<Server>::getInstance();
-	server->setThreads(100);
+	server->setThreads(300);
 	server->setConnects(10);
 	server->setWaitTime(30);
 	server->setKey(1234);
-	server->listen(string("156.224.26.110"), 22222);
-	//server->listen(string("127.0.0.1"), 22222);
+	//server->listen(string("156.224.26.110"), 22222);
+	server->listen(string("127.0.0.1"), 22222);
 
 	server->start();
 	return 0;

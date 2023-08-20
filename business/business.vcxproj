@@ -76,10 +76,12 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="domain\controller\SnapshotController.cpp" />
+    <ClCompile Include="domain\controller\SystemLogController.cpp" />
     <ClCompile Include="domain\controller\UserController.cpp" />
     <ClCompile Include="domain\dao\ParkingLotDAO.cpp" />
     <ClCompile Include="domain\dao\ParkingRecordDAO.cpp" />
     <ClCompile Include="domain\dao\SurveillanceVideoDAO.cpp" />
+    <ClCompile Include="domain\dao\SystemLogDAO.cpp" />
     <ClCompile Include="domain\dao\UserDAO.cpp" />
     <ClCompile Include="domain\entity\ParkingRecord.cpp" />
     <ClCompile Include="domain\entity\Snapshot.cpp" />
@@ -111,11 +113,15 @@
     <ClCompile Include="utility\json\Json.cpp" />
     <ClCompile Include="utility\json\Parser.cpp" />
     <ClCompile Include="utility\logger\Logger.cpp" />
+    <ClCompile Include="utility\timer\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="domain\controller\SystemLogController.h" />
+    <ClInclude Include="domain\dao\SystemLogDAO.h" />
+    <ClInclude Include="utility\csv\CSVTool.h" />
     <ClInclude Include="domain\controller\SnapshotController.h" />
     <ClInclude Include="domain\controller\UserController.h" />
     <ClInclude Include="domain\dao\ParkingLotDAO.h" />
@@ -156,6 +162,7 @@
     <ClInclude Include="utility\logger\Logger.h" />
     <ClInclude Include="utility\ObjectPool.h" />
     <ClInclude Include="utility\Singleton.h" />
+    <ClInclude Include="utility\timer\Timer.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>

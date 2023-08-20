@@ -18,7 +18,7 @@ namespace shm {
 	struct MemoryBlock
 	{
 		int socketfd;
-		char data[2048 - sizeof(socketfd)];
+		char data[1024 * 11 - sizeof(socketfd)];
 
 		MemoryBlock() :socketfd(0) {
 			memset(data, 0, sizeof(data));

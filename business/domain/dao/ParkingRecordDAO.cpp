@@ -51,7 +51,7 @@ ParkingRecord* ParkingRecordDAO::getParkingRecordByCarNumber(const std::string c
 	SQLQueryBuilder builder;
 	std::string sql = builder.select("*")
 		.from("parking_records")
-		.where("id = '" + carNumber + "'")
+		.where("car_number = '" + carNumber + "' AND payment_status = 0")
 		.build();
 	char** qres;
 	int row, col;
@@ -106,15 +106,19 @@ bool ParkingRecordDAO::updateParkingRecord(const ParkingRecord& data)
 		builder.set("exit_address", "'" + data.getExitAddress() + "'");
 	}
 
+	if (!data.getExitTime().empty()) {
+		builder.set("exit_time", "'" + data.getExitTime() + "'");
+	}
+
 	if (data.getParkingDuration().empty()) {
-		builder.set("parking_duration", data.getParkingDuration());
+		builder.set("parking_duration", "'" + data.getParkingDuration() + "'");
 	}
 
 	if (data.getParkingFee() >= 0.0) {
 		builder.set("parking_fee", std::to_string(data.getParkingFee()));
 	}
 
-	if (data.getPaymentStatus() >= 1 && data.getPaymentStatus() <= 2) {
+	if (data.getPaymentStatus() >= 0 && data.getPaymentStatus() <= 1) {
 		builder.set("payment_status", std::to_string(data.getPaymentStatus()));
 	}
 
@@ -134,9 +138,18 @@ bool ParkingRecordDAO::addParkingRecord(const ParkingRecord& data)
 	// 构建SQL
 	SQLQueryBuilder builder;
 	std::string sql = builder.insertInto("parking_records", "user_id, car_number, entry_url, entry_address, entry_time, exit_url, exit_address, exit_time, parking_duration, parking_fee, payment_status, created_at")
-		.values(std::to_string(data.getUserId()) + ", '" + data.getCarNumber() + "', '" + data.getEntryUrl() + "', '" + data.getEntryAddress() + data.getEntryTime() +
-				data.getExitUrl() + "', '" + data.getExitAddress() + data.getExitTime() + data.getParkingDuration() + ", " +
-				std::to_string(data.getParkingFee()) + ", " + std::to_string(data.getPaymentStatus()) + ", DATETIME('now')")
+		.values(std::to_string(data.getUserId()) + ", '" +
+			data.getCarNumber() + "', '" +
+			data.getEntryUrl() + "', '" +
+			data.getEntryAddress() + "', '" +
+			data.getEntryTime() + "', '" +
+			data.getExitUrl() + "', '" +
+			data.getExitAddress() + "', '" +
+			data.getExitTime() + "', '" +
+			data.getParkingDuration() + "', " +
+			std::to_string(data.getParkingFee()) + ", " +
+			std::to_string(data.getPaymentStatus()) +
+			", DATETIME('now')")
 		.build();
 
 	if (this->db->doExec(sql) == 0)
@@ -163,7 +176,7 @@ std::vector<ParkingRecord> ParkingRecordDAO::getPageOfParkingRecords(int pageNum
 	}
 
 	int offset = (pageNumber - 1) * recordsPerPage;
-	builder.limit(recordsPerPage, offset);
+	builder.limit(offset, recordsPerPage);
 	std::string sql = builder.build();
 
 	char** qres;

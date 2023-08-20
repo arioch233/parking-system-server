@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 
 	// 系统服务初始化
 	Server* server = Singleton<Server>::getInstance();
-	server->setThreads(100);
+	server->setThreads(300);
 	server->start();
 	return 0;
 }

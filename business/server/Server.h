@@ -2,7 +2,10 @@
 
 #include <string>
 
+#include "../utility/timer/Timer.h"
+
 using std::string;
+using namespace utility;
 
 namespace server {
 	class Server
@@ -21,10 +24,14 @@ namespace server {
 		void setThreads(int threads);
 
 	private:
+		// 日志备份
+		static void backupSystemLog();
+
 		// 服务启动成功打印系统信息
 		void draw();
 
 	private:
 		int threads;
+		Timer backupTimer;
 	};
 }

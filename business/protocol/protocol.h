@@ -47,7 +47,7 @@ namespace protocol {
 	/**
 	 * JSON数据包
 	 */
-	constexpr size_t MaxJsonLength = 1024; // 最大允许的 JSON 数据长度
+	constexpr size_t MaxJsonLength = 1024 * 10; // 最大允许的 JSON 数据长度
 
 	struct JsonContent {
 		uint32_t crc;                       // CRC 校验

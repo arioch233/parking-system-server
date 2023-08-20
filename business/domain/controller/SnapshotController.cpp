@@ -75,7 +75,8 @@ std::string SnapshotController::getSnapShotRecordList(int pageNumber, int record
 		Json arr(Json::JSON_ARRAY);
 		for (int i = 0; i < records.size(); ++i)
 		{
-			SurveillanceVideo* video = this->surveillanceVideoDAO.getVideoInfoById(records[i].getVideoId());
+			int videoId = records[i].getVideoId();
+			SurveillanceVideo* video = this->surveillanceVideoDAO.getVideoInfoById(videoId);
 			Json temp;
 			temp["videoName"] = records[i].getFilePath();
 			temp["videoUrl"] = video->getVideoUrl();

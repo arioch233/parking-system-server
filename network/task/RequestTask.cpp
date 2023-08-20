@@ -85,13 +85,13 @@ void RequestTask::run()
 			return;
 		}
 		// 校验数据完整性
-		uint32_t currentCRC = CRC32::calculate(fileContent.chunkData);
-		if (currentCRC != fileContent.checksum)
-		{
-			warn("packet content CRC check failure");
-			handler->attach(socket);
-			return;
-		}
+		//uint32_t currentCRC = CRC32::calculate(fileContent.chunkData);
+		//if (currentCRC != fileContent.checksum)
+		//{
+		//	warn("packet content CRC check failure");
+		//	handler->attach(socket);
+		//	return;
+		//}
 		// 重组JSON数据包
 		FilePacket filePacket(packetHeader, fileContent);
 		// 写入共享内存

@@ -58,9 +58,9 @@ std::vector<int> UploadFileHandler::verifyAndSortChunks(int& userId, int& fileSi
 		fileSize += content.chunkSize;
 		//std::cout << "index = " << content.chunkIndex << " 当前 " << calculatedChecksum << " 原本 " << content.checksum << std::endl;
 		// 如果校验失败，记录索引
-		if (calculatedChecksum != content.checksum) {
+		/*if (calculatedChecksum != content.checksum) {
 			failedChecksumIndices.push_back(static_cast<int>(i));
-		}
+		}*/
 	}
 	return failedChecksumIndices;
 }
