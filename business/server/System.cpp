@@ -1,6 +1,8 @@
 #include "System.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cstring>
 
 #include <unistd.h>
@@ -54,6 +56,17 @@ void System::init()
 	{
 		closedir(dir);
 	}
+	// 创建数据库存储文件夹
+	const string& dbDir = this->rootPath + "/db";
+	dir = opendir(dbDir.c_str());
+	if (dir == nullptr)
+	{
+		mkdir(dbDir.c_str(), 0755);
+	}
+	else
+	{
+		closedir(dir);
+	}
 
 	// 初始化日志系统
 	Logger* log = Logger::instance();
@@ -61,7 +74,39 @@ void System::init()
 	info("log module is successfully initialized");
 	// 初始化数据库
 	SingleDB* db = Singleton<SingleDB>::getInstance();
-	db->openDataBase(this->rootPath + "/sys.db");
+	db->openDataBase(this->rootPath + "/db/sys.db");
+	bool isDatabaseInitialized = false;
+	char** qres;
+	int row, col;
+	int rc = db->doSQL("SELECT name FROM sqlite_master WHERE type='table'", qres, row, col);
+	if (rc != 0)
+	{
+		error("unable to check if the database is already initialized");
+	}
+	else {
+		if (row != 0)
+		{
+			isDatabaseInitialized = true;
+		}
+	}
+
+	if (!isDatabaseInitialized) {
+		// 如果数据库未初始化，则从SQL文件初始化数据库
+		std::ifstream sqlFile(this->rootPath + "/db/sys.sql");
+		std::stringstream buffer;
+		buffer << sqlFile.rdbuf();
+		std::string sqlStatement = buffer.str();
+
+		rc = db->doExec(sqlStatement);
+
+		if (rc != SQLITE_OK) {
+			error("failed to initialize the database");
+		}
+		else {
+			debug("database initialized successfully");
+		}
+	}
+	info("database module is successfully initialized");
 }
 
 string System::getRootPath()

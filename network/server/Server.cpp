@@ -47,7 +47,7 @@ void Server::start() {
 
 	// 初始化心跳包监听
 	HeartbeatMonitor* h_monitor = Singleton<HeartbeatMonitor>::getInstance();
-	h_monitor->startMonitor(30.0, 30 * 1000);
+	h_monitor->startMonitor(300.0, 300 * 1000);
 
 	this->draw();
 	handler->handle(this->connects, this->waitTime);
