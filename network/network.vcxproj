@@ -75,6 +75,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="server\HeartbeatMonitor.cpp" />
     <ClCompile Include="server\Server.cpp" />
     <ClCompile Include="server\System.cpp" />
     <ClCompile Include="server\TaskMonitor.cpp" />
@@ -100,11 +101,13 @@
     <ClCompile Include="utility\json\Json.cpp" />
     <ClCompile Include="utility\json\Parser.cpp" />
     <ClCompile Include="utility\logger\Logger.cpp" />
+    <ClCompile Include="utility\timer\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="server\HeartbeatMonitor.h" />
     <ClInclude Include="server\Server.h" />
     <ClInclude Include="server\System.h" />
     <ClInclude Include="server\TaskMonitor.h" />
@@ -133,6 +136,7 @@
     <ClInclude Include="utility\ObjectPool.h" />
     <ClInclude Include="thread\WorkerThread.h" />
     <ClInclude Include="utility\Singleton.h" />
+    <ClInclude Include="utility\timer\Timer.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>

@@ -7,6 +7,7 @@
 #include "../utility/logger/Logger.h"
 #include "../share/SharedMemoryFIFO.h"
 #include "TaskMonitor.h"
+#include "HeartbeatMonitor.h"
 
 using namespace server;
 using namespace utility;
@@ -43,6 +44,11 @@ void Server::start() {
 	// 初始化socket监听
 	SocketHandler* handler = Singleton<SocketHandler>::getInstance();
 	handler->listen(this->ip, this->port);
+
+	// 初始化心跳包监听
+	HeartbeatMonitor* h_monitor = Singleton<HeartbeatMonitor>::getInstance();
+	h_monitor->startMonitor(30.0, 30 * 1000);
+
 	this->draw();
 	handler->handle(this->connects, this->waitTime);
 }

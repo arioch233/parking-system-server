@@ -47,7 +47,6 @@ std::vector<SystemLog> SystemLogDAO::getAllSystemLogList()
 	char** qres;
 	int row, col;
 	int res = this->db->doSQL(sql.c_str(), qres, row, col);
-	std::cout << res << " " << row << std::endl;
 	if (res == 0) {
 		if (row > 0) {
 			for (int i = 1; i <= row; ++i) {

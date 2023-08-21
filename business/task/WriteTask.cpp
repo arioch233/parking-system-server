@@ -49,6 +49,17 @@ void WriteTask::run()
 	{
 	case BusinessEnum::Heartbeat:
 	{
+		JsonContent req;
+		memcpy(&req, block->data + sizeof(PacketHeader), sizeof(JsonContent));
+		info("json data = ", req.jsonData);
+		Parser p;
+		p.load(req.jsonData);
+		Json obj = p.parse();
+		systemLogController.addSystemLogRecord("心跳包", "INFO", "心跳包模块", obj.str(), "心跳包响应");
+		// 写入共享内存
+		JsonPacket resultPacket(BusinessEnum::Heartbeat, obj.str());
+		MemoryBlock data(block->socketfd, &resultPacket, resultPacket.header.packetLength);
+		Singleton<SharedMemoryFIFO>::getInstance()->write(&data);
 		break;
 	}
 	case BusinessEnum::UploadEntryFeatureImage:

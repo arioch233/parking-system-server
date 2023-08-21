@@ -75,6 +75,30 @@ std::vector<Snapshot> SnapshotDAO::getSnapShotList(int pageNumber, int recordsPe
 	return records;
 }
 
+int SnapshotDAO::getSnapShotCount(std::string condition)
+{
+	SQLQueryBuilder builder;
+
+	builder.select("*")
+		.from("snapshots");
+
+	if (!condition.empty()) {
+		builder.where(condition);
+	}
+
+	std::string sql = builder.build();
+
+	char** qres;
+	int row, col;
+	int res = this->db->doSQL(sql.c_str(), qres, row, col);
+	if (res == 0) {
+		if (row > 0) {
+			return row;
+		}
+	}
+	return 0;
+}
+
 std::vector<std::string> SnapshotDAO::getMenuByDay()
 {
 	std::vector<std::string> results;

@@ -207,3 +207,27 @@ std::vector<ParkingRecord> ParkingRecordDAO::getPageOfParkingRecords(int pageNum
 	}
 	return records;
 }
+
+int ParkingRecordDAO::getParkingRecords(std::string condition)
+{
+	SQLQueryBuilder builder;
+
+	builder.select("*")
+		.from("parking_records");
+
+	if (!condition.empty()) {
+		builder.where(condition);
+	}
+
+	std::string sql = builder.build();
+
+	char** qres;
+	int row, col;
+	int res = this->db->doSQL(sql.c_str(), qres, row, col);
+	if (res == 0) {
+		if (row > 0) {
+			return row;
+		}
+	}
+	return 0;
+}

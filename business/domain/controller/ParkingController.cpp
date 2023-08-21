@@ -208,8 +208,9 @@ std::string ParkingController::getParkingRecords(int pageNumber, int recordsPerP
 	}
 	condition += "payment_status = 1";
 	std::vector<ParkingRecord> records = this->parkingRecordDAO.getPageOfParkingRecords(pageNumber, recordsPerPage, condition, "entry_time DESC");
+	int counts = this->parkingRecordDAO.getParkingRecords(condition);
 	Json result;
-	if (records.empty() && records.size() == 0)
+	if (records.empty() && records.size() == 0 || counts == 0)
 	{
 		result["flag"] = true;
 		result["msg"] = "入场记录为空";
@@ -220,6 +221,7 @@ std::string ParkingController::getParkingRecords(int pageNumber, int recordsPerP
 	{
 		result["flag"] = true;
 		result["msg"] = "共有 " + std::to_string(records.size()) + "记录";
+		result["count"] = counts;
 		Json arr(Json::JSON_ARRAY);
 		for (int i = 0; i < records.size(); ++i)
 		{

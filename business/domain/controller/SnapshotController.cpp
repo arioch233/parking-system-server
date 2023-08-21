@@ -60,6 +60,7 @@ std::string SnapshotController::getSnapShotRecordList(int pageNumber, int record
 		condition = "created_at LIKE '%" + dateTime + "%'";
 	}
 	std::vector<Snapshot> records = this->snapshotDAO.getSnapShotList(pageNumber, recordsPerPage, condition, "created_at DESC");
+	int counts = this->snapshotDAO.getSnapShotCount(condition);
 	Json result;
 	if (records.empty() && records.size() == 0)
 	{
@@ -72,6 +73,7 @@ std::string SnapshotController::getSnapShotRecordList(int pageNumber, int record
 	{
 		result["flag"] = true;
 		result["msg"] = "共有 " + std::to_string(records.size()) + "记录";
+		result["count"] = counts;
 		Json arr(Json::JSON_ARRAY);
 		for (int i = 0; i < records.size(); ++i)
 		{

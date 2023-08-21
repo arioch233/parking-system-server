@@ -23,6 +23,8 @@ public:
 	bool addParkingRecord(const ParkingRecord& data);
 	// 分页查询
 	std::vector<ParkingRecord> getPageOfParkingRecords(int pageNumber, int recordsPerPage, std::string condition, std::string oder);
+	// 获取分页查询总记录条数
+	int getParkingRecords(std::string condition);
 
 private:
 	SingleDB* db;

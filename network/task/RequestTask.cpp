@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <cerrno>
 
+#include "../server/HeartbeatMonitor.h"
 #include "../protocol/protocol.h"
 #include "../socket/SocketHandler.h"
 #include "../utility/logger/Logger.h"
@@ -18,6 +19,7 @@ using namespace utility;
 using namespace json;
 using namespace protocol;
 using namespace shm;
+using namespace server;
 
 RequestTask::RequestTask(Socket* socket) :BaseTask(socket)
 {
@@ -37,8 +39,8 @@ void RequestTask::run()
 	// 读头
 	int len = read(socket->getSocketFd(), &packetHeader, sizeof(PacketHeader));
 
-	std::cout << "包体长度: " << packetHeader.packetLength << std::endl;
-	std::cout << "数据包类型" << (int)packetHeader.packetType << std::endl;
+	// 每次收到在线用户的请求刷新时间戳
+	Singleton<HeartbeatMonitor>::getInstance()->updateOnlneUserStatus(socket->getSocketFd());
 
 	if (len == 0)
 	{
@@ -67,16 +69,32 @@ void RequestTask::run()
 
 	// 分别处理文件包与普通数据包
 	switch (packetHeader.packetType) {
-		// 与文件相关的数据包处理
+		// 心跳包处理
+	case BusinessEnum::Heartbeat: {
+		info("handle heartbeat packets");
+		// 更新状态
+		Singleton<HeartbeatMonitor>::getInstance()->updateOnlneUserStatus(socket->getSocketFd());
+
+		// JSON
+		Json result;
+		result["flag"] = true;
+		result["msg"] = "收到来自 socket id " + std::to_string(socket->getSocketFd()) + "的心跳包，已更新时间戳";
+
+		// 重组JSON数据包
+		JsonPacket jsonPacket(packetHeader.packetType, result.str());
+		// 写入共享内存
+		MemoryBlock data(socket->getSocketFd(), &jsonPacket, jsonPacket.header.packetLength);
+		Singleton<SharedMemoryFIFO>::getInstance()->write(&data);
+		break;
+	}
+								// 与文件相关的数据包处理
 	case BusinessEnum::UploadEntryFeatureImage:
 	case BusinessEnum::UploadExitFeatureImage:
 	case BusinessEnum::UploadFeatureImage:
 	{
-		std::cout << "文件" << sizeof(FilePacket) << std::endl;
 		FileContent fileContent;
 		// 读体
 		len = read(socket->getSocketFd(), &fileContent, packetHeader.packetLength - sizeof(packetHeader));
-		std::cout << "============================== index = " << fileContent.chunkIndex << std::endl;
 		info("userId = %d, filename = %s, index = %d, total = %d, size = %d", fileContent.userid, fileContent.filename, fileContent.chunkIndex, fileContent.totalChunks, fileContent.fileSize);
 		if (len != packetHeader.packetLength - sizeof(packetHeader))
 		{
@@ -85,13 +103,13 @@ void RequestTask::run()
 			return;
 		}
 		// 校验数据完整性
-		//uint32_t currentCRC = CRC32::calculate(fileContent.chunkData);
-		//if (currentCRC != fileContent.checksum)
-		//{
-		//	warn("packet content CRC check failure");
-		//	handler->attach(socket);
-		//	return;
-		//}
+	/*	uint32_t currentCRC = CRC32::calculate(fileContent.chunkData);
+		if (currentCRC != fileContent.checksum)
+		{
+			warn("packet content CRC check failure");
+			handler->attach(socket);
+			return;
+		}*/
 		// 重组JSON数据包
 		FilePacket filePacket(packetHeader, fileContent);
 		// 写入共享内存
@@ -102,7 +120,6 @@ void RequestTask::run()
 	// 默认即为普通数据包处理
 	default:
 	{
-		std::cout << "JSON" << sizeof(JsonPacket) << std::endl;
 		JsonContent jsonContent;
 		// 读体
 		len = read(socket->getSocketFd(), &jsonContent, packetHeader.packetLength - sizeof(packetHeader));
@@ -129,6 +146,7 @@ void RequestTask::run()
 		break;
 	}
 	}
+
 	handler->attach(socket);
 }
 

@@ -29,7 +29,7 @@ namespace protocol {
 
 		UploadVideoInfo,        // 上传停车场录制信息
 		GetDaysMenuList,		// 获取菜单按日
-		GetMouthsMenuList,		// 获取菜单按月
+		GetMouthsMenuList		// 获取菜单按月
 	};
 
 	/**
@@ -155,4 +155,46 @@ namespace protocol {
 			memcpy(&content, &body, sizeof(FileContent));
 		}
 	};
-}
+
+	// 心跳包内容体
+	struct HeartbeatContent
+	{
+		uint64_t timestamp;       // 时间戳，记录发送时间
+		uint32_t sequenceNumber;  // 序列号，用于标识不同的心跳包
+		char data[256];           // 数据字段，用于传输额外信息
+		HeartbeatContent() :timestamp(0), sequenceNumber(0) {
+			memset(data, 0, sizeof(data));
+		}
+		HeartbeatContent(uint32_t seqNum, const std::string& other) :sequenceNumber(seqNum) {
+			memset(data, 0, sizeof(data));
+			strncpy(data, other.c_str(), sizeof(data));
+		}
+		// 设置当前时间戳
+		void setCurrentTimestamp() {
+			timestamp = static_cast<uint64_t>(std::time(nullptr));
+		}
+	};
+
+	// 心跳包
+	struct HeartbeatPacket {
+		PacketHeader header;
+		HeartbeatContent content;
+
+		// 构造函数，初始化默认值
+		HeartbeatPacket() {
+			memset(&header, 0, sizeof(header));
+			memset(&content, 0, sizeof(content));
+		}
+		HeartbeatPacket(uint32_t seqNum, const std::string& other) {
+			header.packetType = BusinessEnum::Heartbeat;
+			header.packetLength = sizeof(PacketHeader) + sizeof(HeartbeatContent) - (sizeof(content.data) - other.size());
+			content.sequenceNumber = seqNum;
+			memset(content.data, 0, sizeof(content.data));
+			strncpy(content.data, other.c_str(), sizeof(content.data));
+		}
+		// 设置当前时间戳
+		void setCurrentTimestamp() {
+			content.timestamp = static_cast<uint64_t>(std::time(nullptr));
+		}
+	};
+};
