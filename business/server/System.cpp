@@ -14,6 +14,7 @@
 #include "../utility/logger/Logger.h"
 #include "../utility/Singleton.h"
 #include "../utility/db/SingleDB.h"
+#include "../utility/ini/IniFile.h"
 
 using namespace utility;
 using namespace db;
@@ -107,6 +108,9 @@ void System::init()
 		}
 	}
 	info("database module is successfully initialized");
+	// 读取配置文件
+	IniFile* ini = Singleton<IniFile>::getInstance();
+	ini->load(this->getRootPath() + "/config.ini");
 }
 
 string System::getRootPath()

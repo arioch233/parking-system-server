@@ -18,11 +18,13 @@
 #include "../utility/Singleton.h"
 #include "../utility/logger/Logger.h"
 #include "../utility/csv/CSVTool.h"
+#include "../utility/ini/IniFile.h"
 #include "../share/SharedMemoryFIFO.h"
 #include "../domain/controller/SystemLogController.h"
 #include "../domain/entity/SystemLog.h"
 
 using namespace server;
+using namespace utility;
 using namespace thr;
 using namespace shm;
 using std::cout;
@@ -35,9 +37,14 @@ Server::~Server() {
 }
 
 void Server::start() {
+	// 获取配置信息
+	IniFile* ini = Singleton<IniFile>::getInstance();
+	int shm_key = (*ini)["server"]["shm_key"];
+	int shm_block_size = (*ini)["server"]["shm_block_size"];
+	int time_interval = (*ini)["server"]["time_interval"];
 	// 初始化共享内存
 	SharedMemoryFIFO* shmFIFO = Singleton<SharedMemoryFIFO>::getInstance();
-	shmFIFO->open(1234, 1024 * 11, this->threads);
+	shmFIFO->open(shm_key, shm_block_size, this->threads);
 	// 初始化日志分配器
 	TaskDispatcher* dispatcher = Singleton<TaskDispatcher>::getInstance();
 	dispatcher->init(this->threads);
@@ -45,7 +52,7 @@ void Server::start() {
 	ServerHandler* handler = Singleton<ServerHandler>::getInstance();
 	this->draw();
 	// 初始化定时器
-	this->backupTimer.start(300 * 1000, Server::backupSystemLog);
+	this->backupTimer.start(time_interval, Server::backupSystemLog);
 	// 启动服务监听
 	handler->handle();
 }

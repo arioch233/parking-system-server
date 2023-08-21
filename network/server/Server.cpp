@@ -5,6 +5,7 @@
 #include "../thread/TaskDispatcher.h"
 #include "../utility/Singleton.h"
 #include "../utility/logger/Logger.h"
+#include "../utility/ini/IniFile.h"
 #include "../share/SharedMemoryFIFO.h"
 #include "TaskMonitor.h"
 #include "HeartbeatMonitor.h"
@@ -29,9 +30,14 @@ void Server::listen(const string& ip, int port) {
 }
 
 void Server::start() {
+	// 获取配置信息
+	IniFile* ini = Singleton<IniFile>::getInstance();
+	int shm_block_size = (*ini)["server"]["shm_block_size"];
+	double time_interval = (*ini)["server"]["time_interval"];
+	int verify_interval = (*ini)["server"]["verify_interval"];
 	// 初始化共享内存
 	SharedMemoryFIFO* shm = Singleton<SharedMemoryFIFO>::getInstance();
-	shm->initialize(this->key, 1024 * 11, this->threads);
+	shm->initialize(this->key, shm_block_size, this->threads);
 
 	// 初始化任务分配器
 	TaskDispatcher* dispatcher = Singleton<TaskDispatcher>::getInstance();
@@ -47,7 +53,7 @@ void Server::start() {
 
 	// 初始化心跳包监听
 	HeartbeatMonitor* h_monitor = Singleton<HeartbeatMonitor>::getInstance();
-	h_monitor->startMonitor(300.0, 300 * 1000);
+	h_monitor->startMonitor(time_interval, verify_interval);
 
 	this->draw();
 	handler->handle(this->connects, this->waitTime);

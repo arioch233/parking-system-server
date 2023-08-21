@@ -110,6 +110,7 @@
     <ClCompile Include="utility\db\SingleDB.cpp" />
     <ClCompile Include="utility\db\SQLiteDB.cpp" />
     <ClCompile Include="utility\hash\CRC32.cpp" />
+    <ClCompile Include="utility\ini\IniFile.cpp" />
     <ClCompile Include="utility\json\Json.cpp" />
     <ClCompile Include="utility\json\Parser.cpp" />
     <ClCompile Include="utility\logger\Logger.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="utility\db\SQLiteDB.h" />
     <ClInclude Include="utility\db\SQLQueryBuilder.h" />
     <ClInclude Include="utility\hash\CRC32.h" />
+    <ClInclude Include="utility\ini\IniFile.h" />
     <ClInclude Include="utility\json\Json.h" />
     <ClInclude Include="utility\json\Parser.h" />
     <ClInclude Include="utility\logger\Logger.h" />

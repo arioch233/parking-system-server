@@ -9,7 +9,9 @@
 #include <sys/types.h>
 #include <sys/resource.h>
 
+#include "../utility/Singleton.h"
 #include "../utility/logger/Logger.h"
+#include "../utility/ini/IniFile.h"
 
 using namespace utility;
 using std::cout;
@@ -44,6 +46,10 @@ void System::init()
 	Logger* log = Logger::instance();
 	log->open(logDir + "/log-dev.log");
 	info("log module is successfully initialized");
+
+	// 读取配置文件
+	IniFile* ini = Singleton<IniFile>::getInstance();
+	ini->load(this->getRootPath() + "/config.ini");
 }
 
 string System::getRootPath()
